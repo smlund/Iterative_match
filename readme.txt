@@ -71,8 +71,36 @@ Obtaining the Code
 
 The authors originally posted the code arXiv.org linked with a draft of the
 PRSTAB manuscript in 2006. This code has been updated to work with version
-changes in Mathematica and numerous improvements have been made. The best
-place to obtain the code is on the US Particle Accelerator School (USPAS)
+changes in Mathematica and numerous improvements have been made. It can be 
+obtained most easily one of two ways: 1) using git  2) from a course web 
+site. Both of these are detailed below.   
+
+1) Using git  
+This is the best way to obtain the latest version with corrections since 
+the software is being maintained under git:
+
+To initialize a git repository, 
+
+   % git clone git@github.com:smlund/iterative_match.git
+
+This will create a directory "iterative_match" where the git clone 
+command was run containing the latest version of the code.    
+
+To update the code, descend into directory iterative_match and run:
+
+  % git pull 
+
+When modifying the repository (for those with edit privilege: please contact 
+me for that if you wish to make and share improvements) 
+
+  ... edit readme.txt file, for example
+  % git add readme.txt  
+  % git commit -m "SML: updated instructions in readme.txt" 
+  % git push 
+
+
+2) From Course Web Site
+The code is posted on the US Particle Accelerator School (USPAS)
 course web site for "Beam Physics with Intense Space-Charge" taught
 by Lund and Barnard. See:
 
@@ -91,21 +119,6 @@ necessary. If there are problems, you are encouraged to first check for
 the most up to date version and then contact us (see info above) if there
 are problems.  
 
-The code can also be obtained on github.com.   
-
-Efforts have been made to employ basic programming structures that should 
-remain backward compatible when Mathematica is updated. Unfortunately,
-Mathematica has had many changes to fairly basic syntax and default
-modes of operation which have impacted to the code in subtle ways
-as the software has changed version-to-version. In an effort to help
-track down issues that may develop with future version changes, the authors
-have included debugging provisions. To use these, set in:
-
-  im_solver.m    =>   DeBug = True;   near top of file 
-  im_inputs.m    =>   IterationPrint = True; 
-                      IterationPlot  = False;
-
-and diagnostic outputs will be made that may assist in identifying problems.   
 
 **************************** 
 Running the Code   
@@ -149,6 +162,21 @@ to enable simple generalization for other applications.  If desired, a
 shorter version of the program can be constructed for a single 
 parameterization case of interest with a specific coordinate system etc, by 
 straightforward simplifications of the functions defined.  
+
+Efforts have been made to employ basic programming structures that should 
+remain backward compatible when Mathematica is updated. Unfortunately,
+Mathematica code is fragile and has had many changes to fairly 
+basic syntax and default modes of operation which have impacted 
+the code in subtle ways as the software has changed version-to-version. 
+In an effort to help
+track down issues that may develop with future version changes, the authors
+have included debugging provisions. To use these, set in:
+
+  im_solver.m    =>   DeBug = True;   near top of file 
+  im_inputs.m    =>   IterationPrint = True; 
+                      IterationPlot  = False;
+
+and diagnostic outputs will be made that may assist in identifying problems.   
 
 **************************** 
 Program Files    

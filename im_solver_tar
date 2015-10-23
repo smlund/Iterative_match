@@ -1,0 +1,3 @@
+
+tar -cvf im_solver.tar readme.txt im_solver.m im_inputs.m im_lattice.m im_utilities.m im_err_chk.m im_cont.m im_seed.m im_iterate.m im_diag.m im_orbit.m im_env_stability.m
+

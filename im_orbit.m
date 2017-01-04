@@ -5,7 +5,7 @@ within a matched beam envelope.
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
 Updated by Steve Lund 
-March, 2014  
+March, 2014; Dec 2016  
 
 Contact:
 Steven M. Lund
@@ -217,7 +217,13 @@ NIntegrate[ csinv[xo[s],xpo[s],wxper[s],wxpper[s]],
 epsx = csinv[xo[soi],xpo[soi],wxper[soi],wxpper[soi]];
 epsy = csinv[yo[soi],ypo[soi],wyper[soi],wypper[soi]];
 
-StylePrint["Characteristic x- and y-Plane Orbits","Section"];
+Print[Style["Characteristic x- and y-Plane Orbits","Section"]];
+If[ SolCase === -1,
+    Print[Style["  Caution: SolCase = -1, Beam may be mismatched",
+	        FontColor -> Red]
+	 ]
+  ];
+
 
 
 (* --- information printouts *)
@@ -281,7 +287,7 @@ outputorbits = {
  NumberForm[1000*ypo[sof],ndigits]
                 };
 
-StylePrint[ TableForm[outputorbits,TableHeadings -> headingorbits] ];
+Print[ Style[TableForm[outputorbits,TableHeadings -> headingorbits]] ];
 
 
 
@@ -304,6 +310,7 @@ Plot[ {1000*rxper[ss*lperiod],-1000*rxper[ss*lperiod],
   FrameLabel      -> {"s/\!\( L\_p \), Lattice Periods","x [mm]",
                       "x-Orbits: Red=Undep, Black=Dep, Blue = pm Env",None},
   ImageSize       -> plotwidth,
+  FrameStyle      -> framestyle, 
   BaseStyle       -> basestyle
     ];
 
@@ -320,6 +327,7 @@ Plot[ {1000*ryper[ss*lperiod],-1000*ryper[ss*lperiod],
   FrameLabel      -> {"s/\!\( L\_p \), Lattice Periods","y [mm]",
                       "y-Orbits: Red=Undep, Black=Dep, Blue = pm Env",None},
   ImageSize       -> plotwidth,
+  FrameStyle      -> framestyle, 
   BaseStyle       -> basestyle
     ];
 
@@ -346,6 +354,7 @@ Plot[ {1000*xpo[ss*lperiod],1000*xpo0[ss*lperiod]},
   FrameLabel      -> {"s/\!\( L\_p \), Lattice Periods","x' [mrad]",
                       "x' Orbits: Red=Undep, Black=Dep",None},
   ImageSize       -> plotwidth,
+  FrameStyle      -> framestyle, 
   BaseStyle       -> basestyle
     ];
 
@@ -361,6 +370,7 @@ Plot[ {1000*ypo[ss*lperiod],1000*ypo0[ss*lperiod]},
   FrameLabel      -> {"s/\!\( L\_p \), Lattice Periods","y' [mrad]",
                       "y' Orbits: Red=Undep, Black=Dep",None},
   ImageSize       -> plotwidth,
+  FrameStyle      -> framestyle, 
   BaseStyle       -> basestyle
     ];
 

@@ -10,7 +10,7 @@ Jan, 2006
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
 Updated by Steve Lund 
-March, 2014  
+March, 2014; Dec 2016  
 
 Contact:
 Steven M. Lund
@@ -32,14 +32,14 @@ If[ !(LatticeType === Continuous || LatticeType === Solenoid ||
   ];
 
 (* SolCase *)
-If[ !(SolCase === 0 || SolCase === 1 || SolCase === 2), 
-    Print["Error: SolCase = " <> SolCase <> " not defined"]; 
+If[ !(SolCase === -1 || SolCase === 0 || SolCase === 1 || SolCase === 2), 
+    Print["Error: SolCase = " <> ToString[SolCase] <> " not defined"]; 
     Abort[]
   ]; 
 
 (* HybridCase *)
 If[ SolCase === 0 && !(HybridCase === 1 || HybridCase === 2), 
-    Print["Error: HybridCase = " <> HybridCase <> " not defined"]; 
+    Print["Error: HybridCase = " <> ToString[HybridCase] <> " not defined"]; 
     Abort[]
   ]; 
 

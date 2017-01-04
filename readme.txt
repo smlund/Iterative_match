@@ -28,12 +28,12 @@ also provide a useful and efficient program for generation of matched
 envelope solutions and analyzing the properties of the solutions.  
 Variable names in the programs reflect the notation used in the 
 paper.  The paper serves as documentation and should be 
-referred to for a detailed understanding of the program.  The program works 
+referred to for a detailed understanding of the program. The program works 
 with various common parameterizations of the system that are employed in 
 accelerator physics including the common perveance + emittance parameterization
 or parameterizations where either the perveance or emittances are replaced 
-by phase advance parameters.  The primary limitation of the program is that 
-it does not work in the limit of full space-charge depression.  This 
+by phase advance parameters. The primary limitation of the program is that 
+it does not work in the limit of full (100%) space-charge depression. This 
 limitation could be removed through simple code extensions, but the authors
 decided against implementing this to keep the program relatively clean as is
 and this limit is not possible in the laboratory anyway.  
@@ -45,7 +45,14 @@ desired lattice focusing functions over one lattice period and setting a flag
 to tell the program to use them.  An example included 
 for a simple quadrupole lattice with sinusoidally varying focusing 
 functions is defined in the input file as a representative example which can
-be easily modified.  
+be easily modified. Provision is included in the program to (simply) integrate
+the envelope equations from a specified initial envlope condition.  However,
+in these cases phase advance parameters etc may not make sense and must be
+interpreted carefully.  
+
+Optional extensions are provided to output characteristic
+orbits (depressed and undepressed) within a uniform charge density beam
+envelope and to plot eigenvalue properties of envelope mismatch modes.  
 
 Please cite the final, published paper if this work/program is 
 referenced.  Users are welcome to modify this program for their own 
@@ -70,10 +77,12 @@ Obtaining the Code
 ****************************
 
 The authors originally posted the code arXiv.org linked with a draft of the
-PRSTAB manuscript in 2006. This code has been updated to work with version
-changes in Mathematica and numerous improvements have been made. It can be 
-obtained most easily one of two ways: 1) using git  2) from a course web 
-site. Both of these are detailed below.   
+PRSTAB manuscript in 2006. This code has been updated for numerous
+significant version changes in Mathematica and many improvements have been
+made. It can be obtained one of two ways:
+  1) using git
+  2) from a course web site.
+Both of these are detailed below.   
 
 1) Using git  
 This is the best way to obtain the latest version with corrections since 
@@ -82,7 +91,8 @@ the software is being maintained under git:
 To initialize a git repository, 
 
    % git clone git@github.com:smlund/iterative_match.git
-
+   % git clone https://github.com/smlund/iterative_match
+ 
 This will create a directory "iterative_match" where the git clone 
 command was run containing the latest version of the code.    
 

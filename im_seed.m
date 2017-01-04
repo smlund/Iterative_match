@@ -10,7 +10,7 @@ Jan, 2006
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
 Updated by Steve Lund 
-March, 2014  
+March, 2014; Dec 2016   
 
 Contact:
 Steven M. Lund
@@ -58,6 +58,9 @@ Seed[SolCase_,Q_?NumericQ,emitx_?NumericQ,emity_?NumericQ,
     ] := 
 Module[{Qx0,Qy0,emitr0}, 
   Which[
+    SolCase === -1,
+      (* --- nothing need to set: direct integration from initial condition *)
+      True, 
     SolCase === 1,
       (* --- set known parameters *)
       Q0 = Q;

@@ -11,7 +11,7 @@ Accelerators and Beams 7, 024801 (2004)
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012
 Updated by Steve Lund 
-March, 2014  
+March, 2014; Dec 2016  
 
 Contact:
 Steven M. Lund
@@ -272,8 +272,12 @@ NumberForm[1/gamma2,ndigits]
 
 (* Output results *)
 
-StylePrint["Envelope Linear Stability","Section"];
-
+Print[Style["Envelope Linear Stability","Section"]];
+If[ SolCase === -1,
+    Print[Style["  Caution: SolCase = -1, Beam may be mismatched",
+	        FontColor -> Red]
+	 ]
+  ];
 
 (* --- information printouts *)
 headingenvstab = {
@@ -304,8 +308,8 @@ outputenvstab = {
  " "
                 };
 
-StylePrint[ TableForm[outputenvstab,TableHeadings -> headingenvstab] ];
-StylePrint[ TableForm[outputmodes,TableHeadings -> {headermodes,None}] ];
+Print[ Style[TableForm[outputenvstab,TableHeadings -> headingenvstab]] ];
+Print[ Style[TableForm[outputmodes,TableHeadings -> {headermodes,None}]] ];
 
 
 (* --- envelope eigenvalue plots on complex unit circle *)
@@ -326,6 +330,7 @@ envevalplt =
 Show[ucirc,axes,evpts,
   ImageSize   -> plotwidth/2, 
   PlotLabel   -> "Linear Perturbation Eigenvalues", 
+  FrameStyle  -> framestyle,
   BaseStyle   -> basestyle
     ];
 

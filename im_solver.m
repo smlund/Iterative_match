@@ -17,7 +17,7 @@ Jan, 2006
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
 Updated by Steve Lund 
-March, 2014  
+March, 2014; December 2016   
 
 Contact:
 Steven M. Lund
@@ -100,14 +100,14 @@ timestart = TimeUsed[];
 Generate and print header with date, user, and machine information. 
 *)
  
-StylePrint["Matched Envelope Solution -- IM Method","Subtitle"];
+Print[Style["Matched Envelope Solution -- IM Method","Subtitle"]];
 rundate = Date[];
-StylePrint[ToString[Part[rundate,2]]<>"-"<>ToString[Part[rundate,3]]<>
+Print[Style[ToString[Part[rundate,2]]<>"-"<>ToString[Part[rundate,3]]<>
            "-"<>ToString[Part[rundate,1]]<>"   by "<>ToString[$UserName]<>
-           " on "<>ToString[$MachineName],"Subsubtitle"
-          ];
-StylePrint["Code Provided by Steve Lund","Subsubtitle"];
-StylePrint["Michigan State University (MSU), Facility for Rare Isotope Beams (FRIB)","Subsubtitle"];
+           " on "<>ToString[$MachineName],"Subsubtitle"]
+     ];
+Print[Style["Code Provided by Steve Lund","Subsubtitle"]];
+Print[Style["Michigan State University (MSU), Facility for Rare Isotope Beams (FRIB)","Subsubtitle"]];
 
 
 (* ***************************************************************** *)
@@ -145,35 +145,48 @@ If[DeBug, Print["DeBug: Import im_err_chk.m"]];
 (* Calculate Matched Envelope to Tolerance                           *)
 (* ***************************************************************** *)
 
-(* --- check direct solution case *) 
-(*
-May want to do this for direct solution case 
+(* Set flag to run IMSolver for standard matched envelope cases *)
+IMSolve = True;
 
+(* --- Direct solution case for any initial condition.
+         This can produce a potentially mismatched envelope 
+*) 
+
+If[DeBug, Print["DeBug: Generating direct solution if applicable."]];
 If[ SolCase == - 1,
-  DirectIntegrate[];
-  IMSolve = True 
+  solution = DirectSolve[];
+  (* *)
+  rx  = xrx  /. solution[[1]][[1]];
+  rxp = xrxp /. solution[[1]][[2]];
+  ry  = xry  /. solution[[1]][[3]];
+  ryp = xryp /. solution[[1]][[4]];
+  (* *)
+  tolachieved = "NA";
+  iterations  = "NA"; 
+  IMSolve = False 
   ];
 (* Abort[]; *)
-*)
 
 (* --- read in functions to construct continuous limit envelopes used 
         in forming a seed iteration 
 *)
 If[DeBug, Print["DeBug: Import im_cont.m"]];
-(* If[IMSolve, << "im_cont.m" ]; *)
-<< "im_cont.m"
+If[IMSolve, << "im_cont.m" ];
+(* << "im_cont.m" *)
 (* Abort[]; *)
 
 (* --- read in functions to generate seed iteration *)
 If[DeBug, Print["DeBug: Import im_seed.m"]];
-<< "im_seed.m"
+If[IMSolve, << "im_seed.m" ];
+(* << "im_seed.m" *)
 (* Abort[]; *)
 
   
 (* --- read in functions for general IM method iterations and generation 
        of matched envelope solutions to tolerance  *)
 If[DeBug, Print["DeBug: Import im_iterate.m"]];
-<< "im_iterate.m"  
+If[IMSolve, << "im_iterate.m" ];
+(* << "im_iterate.m" *) 
 (* Abort[]; *)
   
 (* --- construct matched envelope solution using IM method; save
@@ -190,11 +203,24 @@ If[IMSolve, {iterations, tolachieved} = Match[] ];
 (* Abort[]; *)
 
 (* --- calculate envelope angles from matched envelope functions  
+         only needed in matched iteration case: already calculated in 
+         direct integration when SolCase = -1 <=> IMSolve = False
    rxp[s] .... r_x'(s) defined on s = [0,lperiod]
    ryp[s] .... r_y'(s) defined on s = [0,lperiod]
 *)
-rxp[s_] := rx'[s];
-ryp[s_] := ry'[s]; 
+If[ IMSolve, 
+  rxp[s_] := rx'[s];
+  ryp[s_] := ry'[s]
+  ];
+
+(* --- calculate/reset initial conditions 
+         Used for SolCase = -1, but reset for matched cases in case user applies.
+         Reset will not matter for SolCase = -1 so keep simple. 
+*) 
+rxi = rx[0];
+ryi = ry[0];
+rxpi = rxp[0];
+rypi = ryp[0];
 
 
 (* --- stop timing, so processor time in seconds to generate 

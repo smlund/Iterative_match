@@ -10,7 +10,7 @@ Jan, 2006
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
 Updated by Steve Lund 
-March, 2014  
+March, 2014; Dec 2016  
 
 Contact:
 Steven M. Lund
@@ -29,14 +29,14 @@ Output Properties of Transport Lattice
 *)
 
 (* --- header *)
-StylePrint["Transport Lattice","Section"];
+Print[Style["Transport Lattice","Section"]];
 
 (* --- information printouts *)
 headinglattice = {
 {"Lattice Type",
  "Undepressed Phase Advances [deg/period]",
- "   x-plane, \!\( \[Sigma]\_\(0 x\) \) [deg/period]",
- "   y-plane, \!\( \[Sigma]\_\(0 y\) \) [deg/period]",
+ "   x-plane, \!\( \[Sigma]\_\(0x\) \) [deg/period]",
+ "   y-plane, \!\( \[Sigma]\_\(0y\) \) [deg/period]",
  "Lattice Period, \!\( L\_p \) [m]",
  "Occupancy, \!\( \[Eta] \)",
  "Syncopation Factor, \!\(
@@ -56,7 +56,7 @@ outputlattice = {
  NumberForm[kappa,ndigits]
                 };
 
-StylePrint[ TableForm[outputlattice,TableHeadings -> headinglattice] ];
+Print[ Style[TableForm[outputlattice,TableHeadings -> headinglattice]] ];
 
 
 (* --- make plot of lattice focusing functions *)
@@ -70,7 +70,8 @@ Plot[ {kappax[s],kappay[s]}, {s,0,lperiod},
   FrameLabel       -> {"s (m)",
    "\!\( \[Kappa]\_x \), \!\( \[Kappa]\_y \) \!\( [m\^\(-2\) ] \)",
                  "Lattice Focusing Functions (black = x, red = y)",None}, 
-  ImageSize       -> plotwidth, 
+  ImageSize       -> plotwidth,
+  FrameStyle      -> framestyle, 
   BaseStyle       -> basestyle   
     ];
 
@@ -88,7 +89,7 @@ Output properties of undepressed betatron function
 *)
 
 (* --- header *)
-StylePrint["Undepressed (Lattice) Betatron Function","Section"];
+Print[Style["Undepressed (Lattice) Betatron Function","Section"]];
 
 (* --- betatron function *)
 PlotBeta = 
@@ -101,7 +102,8 @@ Plot[ {betax[s],betay[s]}, {s,0,lperiod},
   FrameLabel       -> {"s (m)",
    "\!\( \[Beta]\_x \), \!\( \[Beta]\_y \) \!\( [m] \)",
                  "Undepressed Betatron Functions (black = x, red = y)",None}, 
-  ImageSize        -> plotwidth, 
+  ImageSize        -> plotwidth,
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle  
     ];
 
@@ -128,7 +130,7 @@ outbeta = {
 {NumberForm[betaxmin,ndigits],NumberForm[betaymin,ndigits]},
 {NumberForm[1000*sbetaxmin,ndigits],NumberForm[1000*sbetaymin,ndigits]}};
 
-StylePrint[ TableForm[outbeta,TableHeadings -> headingbeta] ];,
+Print[ Style[TableForm[outbeta,TableHeadings -> headingbeta]] ];,
 (*else*)
 Null
 ];
@@ -154,6 +156,7 @@ Plot[ {alphax[s],alphay[s]}, {s,0,lperiod},
    "\!\( \[Alpha]\_x \), \!\( \[Alpha]\_y \) \!\( [1] \)",
                  "Undepressed \[Alpha] Functions (black = x, red = y)",None}, 
   ImageSize        -> plotwidth, 
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle  
     ];
 
@@ -177,6 +180,7 @@ Plot[ {gammax[s],gammay[s]}, {s,0,lperiod},
    "\!\( \[Gamma]\_x \), \!\( \[Gamma]\_y \) \!\( [1/Sqrt[m]] \)",
                  "Undepressed \[Gamma] Functions (black = x, red = y)",None}, 
   ImageSize        -> plotwidth, 
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle  
     ];
 
@@ -205,6 +209,7 @@ Plot[ {wx[s],wy[s]}, {s,0,lperiod},
    "\!\( w\_x \), \!\( w\_y \) \!\( [Sqrt[m]] \)",
                  "Undepressed w Functions (black = x, red = y)",None}, 
   ImageSize        -> plotwidth, 
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle  
     ];
 
@@ -220,7 +225,12 @@ Output properties of beam
 *)
 
 (* --- header *)
-StylePrint["Beam Properties","Section"];
+Print[Style["Beam Properties","Section"]];
+If[ SolCase === -1,
+    Print[Style["  Caution: SolCase = -1, Beam may be mismatched",
+	        FontColor -> Red]
+	 ]
+  ];
 
 (* --- information printouts *)
 headingbeam = {
@@ -255,7 +265,7 @@ outputbeam = {
  NumberForm[N[sigmay/sigma0y],ndigits]
              };
 
-StylePrint[ TableForm[outputbeam,TableHeadings -> headingbeam] ];
+Print[ Style[TableForm[outputbeam,TableHeadings -> headingbeam]] ];
 
 
 (*
@@ -263,7 +273,12 @@ Matched Envelope
 *)
 
 (* --- header *)
-StylePrint["Matched Solution","Section"];
+Print[Style["Matched Solution","Section"]];
+If[ SolCase === -1,
+    Print[Style["  Caution: SolCase = -1, Beam may be mismatched",
+	        FontColor -> Red]
+	 ]
+  ];
 
 
 (* --- make plot of matched envelope *)
@@ -283,6 +298,7 @@ Plot[ {envscale*rx[s]*1000, envscale*ry[s]*1000}, {s,0,lperiod},
     "Matched Envelope rms Radii (black = x, red = y)",None}
                         ],
   ImageSize        -> plotwidth, 
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle 
     ];
 
@@ -309,6 +325,7 @@ Plot[ {envscale*rxp[s]*1000, envscale*ryp[s]*1000}, {s,0,lperiod},
      "Matched Envelope rms Angles (black = x, red = y)",None}
                         ],
   ImageSize        -> plotwidth, 
+  FrameStyle       -> framestyle, 
   BaseStyle        -> basestyle  
     ];
 
@@ -380,7 +397,10 @@ headingmatchenv = {
  "    s-locations of Mins [mm]",
  "Matching Conditions:",
  "  Radii,  \!\( r\_x[0], r\_y[0] \) [mm]",
- "  Angles, \!\( r\_x\ ' [0], r\_y ' [0] \) [mrad]"
+ "  Angles, \!\( r\_x\ ' [0], r\_y ' [0] \) [mrad]", 
+ " ", 
+ "  Radii,  \!\( r\_x[L\_p], r\_y[L\_p] \) [mm]",
+ "  Angles, \!\( r\_x\ ' [L\_p], r\_y ' [L\_p] \) [mrad]" 
 },{"x-Horizontal","y-Vertical"}
                   },
 (* else, rms format *)
@@ -431,7 +451,10 @@ outputmatchenv = {
    ],
  {" ", " "},
  {NumberForm[ rx[0]*1000,ndigits],NumberForm[ ry[0]*1000,ndigits]},
- {NumberForm[rxp[0]*1000,ndigits],NumberForm[ryp[0]*1000,ndigits]}
+ {NumberForm[rxp[0]*1000,ndigits],NumberForm[ryp[0]*1000,ndigits]}, 
+ {" ", " "}, 
+ {NumberForm[ rx[lperiod]*1000,ndigits],NumberForm[ ry[lperiod]*1000,ndigits]},
+ {NumberForm[rxp[lperiod]*1000,ndigits],NumberForm[ryp[lperiod]*1000,ndigits]}
                  }, 
 (* else, rms format *)
 outputmatchenv = {
@@ -464,7 +487,7 @@ outputmatchenv = {
                  }
   ];
 
-StylePrint[ TableForm[outputmatchenv,TableHeadings -> headingmatchenv] ];
+Print[ Style[TableForm[outputmatchenv,TableHeadings -> headingmatchenv]] ];
 
 If[ OutputEnvForm === Edge, 
 headingavgrad = {
@@ -496,14 +519,19 @@ outputavgrad = {
                }
   ];
 
-StylePrint[ TableForm[outputavgrad,TableHeadings -> headingavgrad] ];
+Print[ Style[TableForm[outputavgrad,TableHeadings -> headingavgrad]] ];
 
 (*
 Numerical Parameters  
 *)
 
 (* --- header *)
-StylePrint["Matched Solution -- Numerical Parameters","Section"];
+Print[Style["Matched Solution -- Numerical Parameters","Section"]];
+If[ SolCase === -1,
+    Print[Style["  Caution: SolCase = -1, Beam may be mismatched",
+	        FontColor -> Red]
+	 ]
+  ];
 
 (* --- information printouts *)
 headingmatchnum = {
@@ -524,4 +552,4 @@ outputmatchnum = {
  time
                  };
 
-StylePrint[ TableForm[outputmatchnum,TableHeadings -> headingmatchnum] ];
+Print[ Style[TableForm[outputmatchnum,TableHeadings -> headingmatchnum]] ];

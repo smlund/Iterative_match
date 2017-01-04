@@ -11,7 +11,7 @@ Jan, 2006
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012
 Updated by Steve Lund 
-March, 2014  
+March, 2014; December 2016  
 
 Contact:
 Steven M. Lund
@@ -117,7 +117,7 @@ Plot[ x[s], {s,0,lperiod}]
 
 *)
 
-  (*
+(*
 Betafunction[]
 Function to calculate x- and y- plane betatron functions as a function of:
 
@@ -275,5 +275,72 @@ Module[{fncper,nsearch,dssearch,fncmax,fncmin,sfncmax,sfncmin,ss,
 
 ];
 
+(*
+DirectSolve[] 
+Function to solve KV envelope equations from an initial envelope condition:
+  
+  rxi  = r_x(s=0) 
+  rxpi = r_x'(s=0)
+  ryi  = r_y(s=0) 
+  rypi = r_y'(s=0)
+ 
+ + Specified beam via Q, emitx, and emity 
+
+ + Specfied lattice on [0,lperiod] via lperiod, kappax[s], kappay[s], brkpts
+
+Output:
+
+Interpolating functions in list for:
+
+  xrx[s]  .... r_x(s)  on interval s = [0,lperiod] [m]
+  xrxp[s] .... r_x'(s) on interval s = [0,lperiod] [rad]
+  xry[s]  .... r_y(s)  on interval s = [0,lperiod] [m]
+  xryp[s] .... r_y'(s) on interval s = [0,lperiod] [rad]
+  
+Useage:
+
+  functions = DirectSolve[]  and then extract list of interploating functions 
+
+Comments:
+ - Use of breakpoints seems to be an undocumented feature of NDSolve.  
+   It may prove fragile.  Logically, may need Flatten[{s,si,brkpts,sf}] 
+   at some point for correct syntax.  But seems to work fine without.   
+ - Had considerable troubles when numerical precision was set different than 
+   default values on AccuracyGoal. This should be kept in mind if tuning 
+   values.  
+*)
+  
+DirectSolve[] :=  
+Module[{dummy},
+  (* --- solve differential equation *)
+  NDSolve[
+    {xrxp[s] == xrx'[s],
+     xryp[s] == xry'[s], 
+     xrxp'[s] + kappax[s]*xrx[s] - 2*Q/(xrx[s] + xry[s]) - emitx^2/(xrx[s])^3 == 0,
+     xryp'[s] + kappay[s]*xry[s] - 2*Q/(xrx[s] + xry[s]) - emity^2/(xry[s])^3 == 0,
+     xrx[0] == rxi, xrxp[0] == rxpi, 
+     xry[0] == ryi, xryp[0] == rypi
+    }, 
+    {xrx,xrxp,xry,xryp}, {s,0,brkpts,lperiod},
+    MaxSteps      -> 10^6,
+    Method        -> ndmethod, 
+    AccuracyGoal  -> ndag, 
+    PrecisionGoal -> ndpg
+         ]
+      ];
+
+(*
+Debug Check
+
+solution = DirectSolve[];
+
+rx  = xrx  /. solution[[1]][[1]];
+rxp = xrxp /. solution[[1]][[2]];
+ry  = xry  /. solution[[1]][[3]];
+ryp = xryp /. solution[[1]][[4]];
+
+Plot[ {rx[s], ry[s]}, {s,0,lperiod}]
+
+*)
 
 

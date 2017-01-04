@@ -10,8 +10,8 @@ Jan, 2006
 
 Updated by Steve Lund and Kei Fukushima (Hiroshima University) 
 June, 2012  
-Updated by Steve Lund 
-March, 2014  
+Updated by Steve Lund
+March, 2014; Dec 2016   
 
 Contact:
 Steven M. Lund
@@ -29,28 +29,28 @@ lund@frib.msu.edu
 (* ***************************************************************** *)
 (*
 The parameters below are employed to define the focusing lattice 
-and the beam/matched envelope.  A control variable SolCase is used to 
+and the beam/matched envelope. A control variable SolCase is used to 
 specify which parameters are employed in construction of the matched 
-envelope solution.  If a parameter is not needed for the SolCase 
+envelope solution.  If a input parameter is not needed for the SolCase 
 specified, then the parameter is ignored in constructing the matched 
-solution.  Then after construction of the matched solution that value 
-of that irrelevant parameter will be reset to a value consistent with 
+solution. Then after construction of the matched solution, values 
+of any irrelevant parameters will be reset to a value consistent with 
 the matched envelope (specified by the relevant parameters). 
 
 Comments: 
 
 1/ 
 We have set up the lattice to work for 
-sigma0x = sigma0y.  However, we use two input variables 
+sigma0x = sigma0y. However, we use two input variables 
 in this case as well as retaining the more general form in the 
-programs.  This enables more straightforward modification of the code 
+programs. This enables more straightforward modification of the code 
 to problems with lesser degrees of symmetry.  
 
 2/ 
 If high tolerance solutions are constructed, then parameters should be put in
 with high precision (infinite, if possible) to ensure that they will not 
 limit the accuracy of various calculations carried out in setting up the 
-numerical problem.  For example, use 
+numerical problem. For example, use 
    
       sigmax = (1/4)*sigma0x;   NOT   sigmax = 0.25*sigma0x;
             -or- 
@@ -63,18 +63,25 @@ write all subscripts first and superscripts second.
   wp .... working precision used in Mathematica
 
   Solution Case:
-  SolCase     .... 0  lattice params + Q, emitx, emity   specified 
-                   1  lattice params + Q, TuneDepx, TuneDepy specified 
-                   2  lattice params + emitx = emity, TuneDepx = TuneDepy 
+  SolCase     .... -1  Integrate from a specified initial envelope condition 
+                         lattice params + Q, emitx, emity specified 
+                    0  lattice params + Q, emitx, emity   specified 
+                    1  lattice params + Q, TuneDepx, TuneDepy specified 
+                    2  lattice params + emitx = emity, TuneDepx = TuneDepy 
                           specified
                       
                       comments: 
-                        Case 0 can take much longer to run than Case 1 and 2 
+                        Case -1 can be run for mismatched beams and some of the 
+                          outputs in this case (depressed phase advances etc) may 
+                          not be clearly defined. The lattice interval need not be 
+                          periodic here. 
+  
+                        Case  0 can take much longer to run than Case 1 and 2 
                           since the IM method is more efficient with specified 
                           phase-advances. So this requires much more numerical 
                           work with a relatively slow (Mathematica-based) tools.
                          
-                        Case 2 is restricted from the most general 
+                        Case  2 is restricted from the most general 
                           situation to keep the programs in simple form.
 
                        
@@ -108,7 +115,7 @@ write all subscripts first and superscripts second.
   brkptsinputx,y .... List of "breakpoints" for LatticeType = UserInput
                       in s = [0,lperiod].  The list should include any 
                       discontinuities in piecewise constant lattices.  
-                      If none, set as {0,lperiod}.   
+                      If none, set as {0,lperiod} (breakpoints at ends).   
 
   sigma0x     .... x-plane undepressed phase advance [rad/period]
   sigma0y     .... y-plane undepressed phase advance [rad/period]
@@ -116,23 +123,25 @@ write all subscripts first and superscripts second.
                            with kappax and kappay.  For LatticeType not 
                            UserInput this is done automatically.  For 
                            LatticeType = UserInput sigma0x and sigma0y are 
-                           set from kappax and kappay so kappax and kappay 
-                           must be set consistent with desired lattice 
-                           focusing strength.  
+                           set from kappax and kappay input so kappax and kappay 
+                           amplitudes must be given consistent with 
+                           the desired lattice focusing strength.  
   Beam:
 
   Q       .... dimensionless perveance 
   emitx   .... x-plane beam rms edge emittance [meter-radian]
+                 emitx = 4*sqrt[<x^2><x'^2> - <x*x'>^2] with no centroid offsets 
   emity   .... y-plane beam rms edge emittance [meter-radian]
+                 emity = 4*sqrt[<y^2><y'^2> - <y*y'>^2] with no centroid offsets 
 
   sigmax  .... x-plane depressed phase advance [rad/period] (auto-set) 
   sigmay  .... y-plane depressed phase advance [rad/period] (auto-set) 
 
-  TuneDepx = sigmax/sigma0x  (used input <=> sigmax)
-  TuneDepy = sigmay/sigma0y  (used input <=> sigmay) 
+  TuneDepx = sigmax/sigma0x  (used as input <=> sigmax)
+  TuneDepy = sigmay/sigma0y  (used as input <=> sigmay) 
 
   Note: Due to program structure issues TuneDepx, TuneDepy are used 
-  in place of sigmax and sigmay as input parameters.  sigmax is calculated 
+  in place of sigmax and sigmay as input parameters. sigmax is calculated 
   from TuneDepx as sigmax = TuneDepx*sigma0x etc.  
 
 *)
@@ -195,6 +204,18 @@ emity = emitx;
 
 TuneDepx = 0.2;
 TuneDepy = TuneDepx;
+
+(* --- Initial Envelope: 
+         Used only in SolCase = -1; ignored in matching cases *) 
+
+mm = 1.*10^(-3);  
+mr = 1.*10^(-3);
+
+rxi = 4.0*mm;
+ryi = 4.0*mm;
+
+rxpi =  13.*mr; 
+rypi = -13.*mr;
 
 
 (* ***************************************************************** *)
@@ -421,6 +442,7 @@ IterationPlot  = False;      (* Set True or False *)
 ndigits = 5;                        (* Number significant figures for various 
                                          output quantities *)
 basestyle   = {"Times-Roman",14};   (* Font for plot labels *)
+framestyle  = Black;                (* Ensure black rather than grey Mathematica default plotbox *) 
 plotwidth   = 500;                  (* plot width in notebook  *)
 
 

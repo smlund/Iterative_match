@@ -5,15 +5,12 @@ test mod
 This package of Mathematica programs numerically constructs matched
 solutions to the KV envelope equations describing a charged particle beam
 in a linear, periodic transport lattice using the "Iterative Matching" 
-(IM) method.  The IM formulation is described in:
+(IM) method. The IM formulation is described in:
 
   "Efficient computation of matched solutions of the KV envelope equations
    for periodic focusing lattices" 
 
-  S.M. Lund^1, S.H. Chilton^2, and E.P. Lee^2
-
-  1. Lawrence Livermore National Laboratory, Livermore, CA 94550 
-  2. Lawrence Berkeley  National Laboratory, Berkeley,  CA 94720   
+  S.M. Lund, S.H. Chilton, and E.P. Lee
 
   Physical Review Special Topics -- Accelerators and Beams 
   Vol. 9, 064201 (2006) 
@@ -23,36 +20,54 @@ in a linear, periodic transport lattice using the "Iterative Matching"
 
   http://prst-ab.aps.org/abstract/PRSTAB/v9/i6/e064201
 
-The programs both demonstrate the method described in the paper and 
-also provide a useful and efficient program for generation of matched 
-envelope solutions and analyzing the properties of the solutions.  
+The program both demonstrates the method described in the paper and 
+provides a useful tool for generation of matched 
+envelope solutions and analyzing the properties of the solutions. Numerous
+augmentations are also provided for tasks like plots of characteristic
+particle orbits (undepressed and depressed), envelope mode properties, etc. 
 Variable names in the programs reflect the notation used in the 
-paper.  The paper serves as documentation and should be 
-referred to for a detailed understanding of the program. The program works 
-with various common parameterizations of the system that are employed in 
-accelerator physics including the common perveance + emittance parameterization
+paper. The paper serves as documentation and should be referred to for
+a detailed understanding of the program. Additional complementary
+information can be found in US Particle Accelerator School course
+notes (most recent version linked)
+
+  Beam Physics With Intense Space Charge
+  S.M. Lund and J. J. Barnard
+  https://people.nscl.msu.edu/~lund/uspas/bpisc_2015/   
+
+The matching program works with various common parameterizations
+of the system that are employed in accelerator physics including
+the most usual perveance + emittance parameterization
 or parameterizations where either the perveance or emittances are replaced 
-by phase advance parameters. The primary limitation of the program is that 
+by phase advance parameters (which can be thought of as adjusting the lattice
+focusing strength for undepressed phase advance and intensity/perveance for the
+depressed phase advance). The primary limitation of the program is that 
 it does not work in the limit of full (100%) space-charge depression. This 
-limitation could be removed through simple code extensions, but the authors
-decided against implementing this to keep the program relatively clean as is
-and this limit is not possible in the laboratory anyway.  
+limitation could be removed through code extensions, but the authors
+decided against implementing this to keep the program simpler and this limit
+is not achievable in the laboratory anyway.  
 Linear focusing functions corresponding to the piecewise constant lattices 
 using in the paper (continuous, solenoidal, and quadrupole doublet) are 
-included as options.  Options also allow the user to input any 
-x- and y-plane lattice focusing functions desired by simply defining the
-desired lattice focusing functions over one lattice period and setting a flag
-to tell the program to use them.  An example included 
-for a simple quadrupole lattice with sinusoidally varying focusing 
-functions is defined in the input file as a representative example which can
-be easily modified. Provision is included in the program to (simply) integrate
-the envelope equations from a specified initial envlope condition.  However,
-in these cases phase advance parameters etc may not make sense and must be
-interpreted carefully.  
+included as simple "canned" options. Alternatively, users to input any 
+x- and y-plane lattice focusing functions desired by defining the
+desired lattice focusing functions over one lattice period using Mathematica
+code following the template given and setting a flag
+to tell the program to use the defined lattice functions. A prototype
+example is included to illustrate setup in the input file for a simple
+quadrupole lattice with sinusoidally varying focusing functions. This
+example which can be easily modified. The program has been extended
+to (simply) integrate the envelope equations from a specified initial
+envlope condition. However, in this context,  phase advance parameters etc
+may not make sense and must be interpreted carefully.  
 
 Optional extensions are provided to output characteristic
 orbits (depressed and undepressed) within a uniform charge density beam
-envelope and to plot eigenvalue properties of envelope mismatch modes.  
+envelope and to plot eigenvalue properties of envelope mismatch modes. This
+will provide information own stable and any unstable envelope modes. All
+symmetry cases are considered for lattices without skew coupling (x lattice
+focusing force cannot depend on y, etc.). Note that solenoid skew coupling
+is treated for an axisymmetric beam but must be interpreted within a rotating
+Larmor frame.  
 
 Please cite the final, published paper if this work/program is 
 referenced.  Users are welcome to modify this program for their own 
@@ -81,17 +96,20 @@ PRSTAB manuscript in 2006. This code has been updated for numerous
 significant version changes in Mathematica and many improvements have been
 made. It can be obtained one of two ways:
   1) using git
-  2) from a course web site.
+  2) from USPAS course web site.
 Both of these are detailed below.   
 
 1) Using git  
 This is the best way to obtain the latest version with corrections since 
-the software is being maintained under git:
+the software is being maintained under git since 2016:
 
 To initialize a git repository, 
 
-   % git clone git@github.com:smlund/iterative_match.git
+   General:
    % git clone https://github.com/smlund/iterative_match
+
+   Or, if you setup an SSH key on github to work wiht the distribution 
+   % git clone git@github.com:smlund/iterative_match.git 
  
 This will create a directory "iterative_match" where the git clone 
 command was run containing the latest version of the code.    
@@ -108,6 +126,11 @@ me for that if you wish to make and share improvements)
   % git commit -m "SML: updated instructions in readme.txt" 
   % git push 
 
+For the push steps above to work, you must be a collaborator with a github
+account and have setup a valid ssh key on github.  Instructions for the
+ssh key setup can be found at:
+
+   https://help.github.com/articles/generating-an-ssh-key/
 
 2) From Course Web Site
 The code is posted on the US Particle Accelerator School (USPAS)
@@ -338,7 +361,7 @@ beam simulation. Information on Warp can be found on:
 
    http://warp.lbl.gov/
 
-Information on this implementation is covered in the Mater's thesis:
+Information on this implementation is covered in the Master's thesis:
 
   "Implementation of an iterative matching scheme for the
    Kapchinskij-Vladimirskij equations in the WARP code"

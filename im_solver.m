@@ -222,6 +222,12 @@ ryi = ry[0];
 rxpi = rxp[0];
 rypi = ryp[0];
 
+rxf = rx[lperiod];
+ryf = ry[lperiod];
+rxpf = rxp[lperiod];
+rypf = ryp[lperiod];
+
+
 
 (* --- stop timing, so processor time in seconds to generate 
        solution is counted *)
